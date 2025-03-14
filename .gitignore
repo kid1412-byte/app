@@ -1,0 +1,33 @@
+# 💡 Python 관련 무시 파일
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 💡 가상환경(venv) 폴더 제외
+venv/
+venvs/
+myproject/
+.env
+
+# 💡 환경 변수 파일 (.env) (보안 관련 데이터 포함)
+.env
+*.env
+config.py
+
+# 💡 VS Code 설정 파일 제외
+.vscode/
+*.code-workspace
+
+# 💡 로그 파일 제외
+*.log
+logs/
+*.sqlite3
+
+# 💡 배포 관련 임시 파일 제외
+instance/
+.wsgi
+
+# 💡 Mac, Windows에서 자동 생성되는 불필요한 파일 제외
+.DS_Store
+Thumbs.db

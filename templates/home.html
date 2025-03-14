@@ -1,0 +1,45 @@
+<div class="container">
+    <br>
+    <h1 class="text-center"><a href="#">Cha4ser's Free Board!</a></h1>
+    <br>
+    <br>
+    
+    <table class="table table-hover table-striped text-center" style="border: 1px solid;">
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>글쓴이</th>
+                <th>조회수</th>
+            </tr>
+        </thead> 
+        <tbody>
+            {% for i in data_list %}
+            <tr>
+                <td>{{ i[0] }}</td>
+                <td>{{ i[1] }}</td>
+                <td>{{ i[2] }}</td>
+                <td>{{ i[3] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+
+    </table>
+
+    <hr>
+    <div>
+        <ul class="pagination justify-content-center">
+            <li><a href="#" style="margin-right:5px class=text-secondary"> ◀ </a></li>
+            <li><a href="#" style="margin-right:5px class=text-secondary"> 1 </a></li>
+            <li><a href="#" style="margin-right:5px class=text-secondary"> 2 </a></li>
+            <li><a href="#" style="margin-right:5px class=text-secondary"> 3 </a></li>
+            <li><a href="#" style="margin-right:5px class=text-secondary"> 4 </a></li>
+            <li><a href="#" style="margin-right:5px class=text-secondary"> 5 </a></li>
+            <li><a href="#" style="margin-right:5px class=text-secondary"> ▶ </a></li>
+
+        </ul>
+    </div>
+    <a class="btn btn-outline-info float-right">글쓰기</a>
+
+</div>
