@@ -7,25 +7,31 @@ services:
       - "5000:5000"
     depends_on:
       - mysql
+    restart: always
     environment:
-      FLASK_ENV: development
+      FLASK_ENV: ${FLASK_ENV}
+      FLASK_DEBUG: ${FLASK_DEBUG}}
       MYSQL_HOST: mysql
-      MYSQL_USER: root
-      MYSQL_PASSWORD: toor
-      MYSQL_DB: flask_db
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DB: ${MYSQL_DATABASE}
     volumes:
       - .:/app
 
   mysql:
     image: mysql:8.0
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: toor
-      MYSQL_DATABASE: flask_db
+    env_file:
+      - .env
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:  # mysql이 실행될 때까지 기다리도록 설정
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
 
 volumes:
   mysql_data:

@@ -20,16 +20,18 @@
                 <th>번호</th>
                 <th>제목</th>
                 <th>글쓴이</th>
+                <th>시간</th>
                 <th>조회수</th>
             </tr>
         </thead>
         <tbody>
             {% for i in data_list %}
             <tr>
-                <td>{{ i[0] }}</td>
-                <td>{{ i[1] }}</td>
-                <td>{{ i[2] }}</td>
-                <td>{{ i[3] }}</td>
+                <td>{{ i.id }}</td>
+                <td><a href="/post/{{ i.id }}">{{ i.title }}</a></td>
+                <td>{{ i.author }}</td>
+                <td>{{ i.created_at }}</td>
+                <td>{{ i.views }}</td>
             </tr>
             {% endfor %}
         </tbody>
