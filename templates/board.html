@@ -28,7 +28,7 @@
             {% for i in data_list %}
             <tr>
                 <td>{{ i.id }}</td>
-                <td><a href="/post/{{ i.id }}">{{ i.title }}</a></td>
+                <td><a href="{{ url_for('post', post_id=i.id) }}">{{ i.title }}</a></td>
                 <td>{{ i.author }}</td>
                 <td>{{ i.created_at }}</td>
                 <td>{{ i.views }}</td>

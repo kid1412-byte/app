@@ -5,23 +5,23 @@ services:
     build: .
     ports:
       - "5000:5000"
-    depends_on:
+    depends_on: #mysql이 완전히 실행된 후에 실행
       - mysql
     restart: always
-    environment:
+    environment: #각 값은 .env파일에서 불러옴
       FLASK_ENV: ${FLASK_ENV}
-      FLASK_DEBUG: ${FLASK_DEBUG}}
+      FLASK_DEBUG: ${FLASK_DEBUG}
       MYSQL_HOST: mysql
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DB: ${MYSQL_DATABASE}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     volumes:
       - .:/app
 
   mysql:
     image: mysql:8.0
     restart: always
-    env_file:
+    env_file: # 환경변수 파일 지정
       - .env
     ports:
       - "3306:3306"

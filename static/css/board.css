@@ -87,3 +87,21 @@ tr:hover {
 .button:hover {
     background: #0056b3;
 }
+
+a,
+a:link,
+a:visited,
+a:active {
+    color: black;
+    text-decoration: none;
+}
+
+a.button {
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #007bff; /* 마우스 올렸을 때는 파란색 */
+    text-decoration: none;
+}

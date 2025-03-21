@@ -1,0 +1,73 @@
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
+  }
+  
+  h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+  }
+  
+  .post-meta {
+    margin-bottom: 20px;
+    color: #666;
+    font-size: 0.95em;
+  }
+  
+  .post-meta p {
+    margin: 5px 0;
+  }
+  
+  .post-content {
+    font-size: 1.1em;
+    line-height: 1.8;
+    color: #333;
+    white-space: pre-line;
+    margin-bottom: 30px;
+  }
+  
+  .post-actions {
+    text-align: right;
+  }
+  
+  .post-actions a {
+    text-decoration: none;
+    background-color: #3498db;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .post-actions a:hover {
+    background-color: #2980b9;
+  }
+  
+  .button.edit {
+    background-color: #28a745;
+  }
+  .button.edit:hover {
+    background-color: #218838;
+  }
+  
+  .button.delete {
+    background-color: #dc3545;
+  }
+  .button.delete:hover {
+    background-color: #c82333;
+  }
+  
+  .button.cancel {
+    background-color: #6c757d;
+  }
+  .button.cancel:hover {
+    background-color: #5a6268;
+  }
+  
