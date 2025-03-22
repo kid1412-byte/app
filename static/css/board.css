@@ -70,6 +70,13 @@ tr:hover {
     color: white;
 }
 
+.pagination a.active {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+
 /* 버튼 스타일 */
 .button {
     display: block;
@@ -104,4 +111,36 @@ a.button {
 a:hover {
     color: #007bff; /* 마우스 올렸을 때는 파란색 */
     text-decoration: none;
+}
+
+/* 검색 스타일 */
+/* 검색 폼을 감싸는 컨테이너 */
+.search-container {
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
+    align-items: center; /* 세로 정렬 */
+    gap: 10px; /* 요소 간 간격 */
+    margin-bottom: 20px; /* 검색창 아래 여백 */
+}
+
+/* 검색창 스타일 */
+.search-form select,
+.search-form input[type="text"],
+.search-form button {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+/* 검색 버튼 스타일 */
+.search-form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    background-color: #0056b3;
 }
