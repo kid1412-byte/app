@@ -9,6 +9,7 @@
 <body>
   <div class="container">
     <h1>게시글 수정</h1>
+    <!-- 게시글 수정 폼 -->
     <form method="POST">
       <label for="title">제목</label>
       <input type="text" id="title" name="title" value="{{ post.title }}" required>
@@ -21,6 +22,7 @@
 
       <div class="button-group">
         <button type="submit" class="button">수정 완료</button>
+        <!-- 취소 시 해당 게시글 상세 보기로 이동 -->
         <a href="{{ url_for('post', post_id=post.id) }}" class="button cancel">취소</a>
       </div>
     </form>

@@ -12,7 +12,7 @@
 
 <div class="container">
     <h1>글쓰기</h1>
-    
+    <!-- 게시글 작성 폼 -->
     <form action="/write" method="POST">
         <label for="title">제목</label>
         <input type="text" id="title" name="title" required>
@@ -25,6 +25,7 @@
 
         <div class="buttons">
             <button type="submit" class="button">등록</button>
+            <!-- 취소시 다시 게시판으로 -->
             <a href="/board" class="button cancel">취소</a>
         </div>
     </form>

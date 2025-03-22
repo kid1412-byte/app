@@ -4,24 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>게시글</title>
+  <!-- CSS 파일 불러오기 -->
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}" />
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/post.css') }}" />
 
 </head>
 <body>
   <div class="container">
+    <!-- 제목 -->
     <h1>{{ post.title }}</h1>
     <div class="post-meta">
       <p><strong>작성자:</strong> {{ post.author }}</p>
       <p><strong>작성일:</strong> {{ post.created_at }}</p>
       <p><strong>조회수:</strong> {{ post.views }}</p>
     </div>
+    <!-- 게시글 내용 -->
     <div class="post-content">
       <p>{{ post.content }}</p>
     </div>
     <div class="post-actions">
+      <!-- 게시판으로 이동 -->
       <a href="{{ url_for('board') }}">목록으로</a>
+      <!-- 수정 창으로 이동 -->
       <a href="{{ url_for('edit', post_id=post.id) }}" class="button edit">수정</a>
+      <!-- 게시글 삭제 -->
       <a href="{{ url_for('delete', post_id=post.id) }}" class="button delete" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
     </div>
   </div>
