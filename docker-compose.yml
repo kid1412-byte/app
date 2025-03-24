@@ -24,7 +24,7 @@ services:
     env_file: # 환경변수 파일 지정
       - .env
     ports:
-      - "3306:3306"
+      - "3307:3306" # 포트 바인딩 오류 제거
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:  # mysql이 실행될 때까지 기다리도록 설정
