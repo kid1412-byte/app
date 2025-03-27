@@ -217,7 +217,17 @@ def delete(post_id):
         return "DB 연결 실패", 500
 
     try:
-        with conn.cursor() as cursor:
+        with conn.cursor(dictionary=True) as cursor:
+            # 삭제할 게시글 정보 조회
+            cursor.execute("SELECT filename FROM board WHERE id = %s", (post_id,))
+            post = cursor.fetchone()
+
+            # 파일이 있으면 서버에서 삭제
+            if post and post["filename"]:
+                file_path = os.path.join(current_app.config["UPLOAD_FOLDER"], post["filename"])
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+            
             # 테이블에서 해당 게시글 id를 가진 행 삭제
             cursor.execute("DELETE FROM board WHERE id = %s", (post_id,))
             conn.commit() # db 변경 내용 저장
