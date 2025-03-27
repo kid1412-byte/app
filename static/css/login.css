@@ -1,0 +1,91 @@
+/* 전체 배경과 폰트 설정 */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f1f3f5;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* 로그인 박스 */
+  .container {
+    width: 100%;
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 30px 25px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* 제목 */
+  h2 {
+    text-align: center;
+    color: #343a40;
+    margin-bottom: 25px;
+  }
+  
+  /* 폼 라벨 */
+  form label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #495057;
+  }
+  
+  /* 입력창 */
+  form input[type="text"],
+  form input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+  }
+  
+  form input:focus {
+    border-color: #74c0fc;
+    outline: none;
+  }
+  
+  /* 로그인 버튼 */
+  button {
+    margin-top: 25px;
+    width: 100%;
+    padding: 12px;
+    background-color: #228be6;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  button:hover {
+    background-color: #1c7ed6;
+  }
+  
+  /* 회원가입 링크 */
+  .signup-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #495057;
+  }
+  
+  .signup-link a {
+    color: #228be6;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 6px;
+    transition: color 0.2s;
+  }
+  
+  .signup-link a:hover {
+    color: #1864ab;
+    text-decoration: none;
+  }
+  

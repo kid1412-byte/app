@@ -16,7 +16,7 @@
 
     <!-- 검색 폼 -->
     <div class="search-container">
-        <form method="get" action="{{ url_for('board') }}" class="search-form">
+        <form method="get" action="{{ url_for('board.board') }}" class="search-form">
             <!-- 검색 기준 선택 -->
             <select name="search_type">
                 <option value="all" {% if search_type == 'all' %}selected{% endif %}>제목+내용</option>
@@ -45,7 +45,7 @@
             {% for i in data_list %}
             <tr>
                 <td>{{ i.id }}</td>
-                <td><a href="{{ url_for('post', post_id=i.id) }}">{{ i.title }}</a></td>
+                <td><a href="{{ url_for('board.post', post_id=i.id) }}">{{ i.title }}</a></td>
                 <td>{{ i.author }}</td>
                 <td>{{ i.created_at }}</td>
                 <td>{{ i.views }}</td>
@@ -57,25 +57,25 @@
     <ul class="pagination">
         <!-- 페이지가 1보다 크면 이전 화살표 표시-->
         {% if page > 1 %}
-            <li><a href="{{ url_for('board', page=page-1, search_type=search_type, keyword=keyword) }}">◀</a></li>
+            <li><a href="{{ url_for('board.board', page=page-1, search_type=search_type, keyword=keyword) }}">◀</a></li>
         {% endif %}
         
         <!-- 페이지 번호 이동 버튼 -->
         {% for p in range(1, total_pages + 1) %}
             <li>
-                <a href="{{ url_for('board', page=p, search_type=search_type, keyword=keyword) }}"
+                <a href="{{ url_for('board.board', page=p, search_type=search_type, keyword=keyword) }}"
                    class="{% if p == page %}active{% endif %}">{{ p }}</a>
             </li>
         {% endfor %}
         
         <!-- 페이지가 전체 페이지 갯수보다 작으면 다음 화살표 표시-->
         {% if page < total_pages %}
-            <li><a href="{{ url_for('board', page=page+1, search_type=search_type, keyword=keyword) }}">▶</a></li>
+            <li><a href="{{ url_for('board.board', page=page+1, search_type=search_type, keyword=keyword) }}">▶</a></li>
         {% endif %}
     </ul>
     
     <!-- 게시글 작성으로 이동 -->
-    <a href="/write" class="button">글쓰기</a>
+    <a href="{{ url_for('board.write') }}" class="button">글쓰기</a>
 </div>
 
 </body>

@@ -2,3 +2,5 @@ Flask
 flask-mysql-connector
 mysql-connector-python
 python-dotenv
+Werkzeug
+Flask-JWT-Extended

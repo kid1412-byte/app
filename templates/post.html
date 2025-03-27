@@ -17,6 +17,13 @@
       <p><strong>작성자:</strong> {{ post.author }}</p>
       <p><strong>작성일:</strong> {{ post.created_at }}</p>
       <p><strong>조회수:</strong> {{ post.views }}</p>
+      {% if post.filename %}
+        <p><strong>첨부파일:</strong> 
+          <a href="{{ url_for('board.download_file', filename=post.filename) }}" download>
+            {{ post.filename }}
+          </a>
+        </p>
+      {% endif %}
     </div>
     <!-- 게시글 내용 -->
     <div class="post-content">
@@ -24,11 +31,11 @@
     </div>
     <div class="post-actions">
       <!-- 게시판으로 이동 -->
-      <a href="{{ url_for('board') }}">목록으로</a>
+      <a href="{{ url_for('board.board') }}">목록으로</a>
       <!-- 수정 창으로 이동 -->
-      <a href="{{ url_for('edit', post_id=post.id) }}" class="button edit">수정</a>
+      <a href="{{ url_for('board.edit', post_id=post.id) }}" class="button edit">수정</a>
       <!-- 게시글 삭제 -->
-      <a href="{{ url_for('delete', post_id=post.id) }}" class="button delete" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
+      <a href="{{ url_for('board.delete', post_id=post.id) }}" class="button delete" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
     </div>
   </div>
 </body>

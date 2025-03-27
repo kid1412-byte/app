@@ -23,7 +23,7 @@
       <div class="button-group">
         <button type="submit" class="button">수정 완료</button>
         <!-- 취소 시 해당 게시글 상세 보기로 이동 -->
-        <a href="{{ url_for('post', post_id=post.id) }}" class="button cancel">취소</a>
+        <a href="{{ url_for('board.post', post_id=post.id) }}" class="button cancel">취소</a>
       </div>
     </form>
   </div>
