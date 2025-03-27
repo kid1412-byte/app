@@ -45,7 +45,15 @@
             {% for i in data_list %}
             <tr>
                 <td>{{ i.id }}</td>
-                <td><a href="{{ url_for('board.post', post_id=i.id) }}">{{ i.title }}</a></td>
+                <td>
+                    <a href="{{ url_for('board.post', post_id=i.id) }}">
+                      {% if i.is_secret %}
+                        🔒 {{ i.title }}
+                      {% else %}
+                        {{ i.title }}
+                      {% endif %}
+                    </a>
+                  </td>
                 <td>{{ i.author }}</td>
                 <td>{{ i.created_at }}</td>
                 <td>{{ i.views }}</td>

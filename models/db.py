@@ -34,7 +34,9 @@ def create_tables():
             content TEXT NOT NULL,
             filename VARCHAR(255),
             created_at DATE DEFAULT (CURRENT_DATE),
-            views INT DEFAULT 0
+            views INT DEFAULT 0,
+            is_secret BOOLEAN DEFAULT FALSE,
+            post_password VARCHAR(100)
         )
     """)
     # board라는 이름의 테이블이 없다면 생성

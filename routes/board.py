@@ -99,8 +99,9 @@ def write():
     author = get_jwt_identity()
     content = request.form.get("content")
     file = request.files.get("file")
+    is_secret = bool(request.form.get("is_secret"))
+    post_password = request.form.get("post_password") if is_secret else None
     filename = None
-
     if file and file.filename != "":
         filename = secure_filename(file.filename)
         file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], filename))
@@ -118,8 +119,8 @@ def write():
     try:
         with conn.cursor() as cursor:
             cursor.execute(
-                "INSERT INTO board (title, author, content, filename) VALUES (%s, %s, %s, %s)",
-                (title, author, content, filename)
+                "INSERT INTO board (title, author, content, filename, is_secret, post_password) VALUES (%s, %s, %s, %s, %s, %s)",
+                (title, author, content, filename, is_secret, post_password)
             )
         conn.commit()
         return redirect(url_for("board.board"))
@@ -129,7 +130,7 @@ def write():
         conn.close()
 
 # 게시글 상세 보기
-@board_bp.route("/post/<int:post_id>")
+@board_bp.route("/post/<int:post_id>", methods=["GET", "POST"])
 @jwt_required()
 def post(post_id):
     conn = get_db_connection() # mysql 연결
@@ -138,16 +139,25 @@ def post(post_id):
 
     try:
         with conn.cursor(dictionary=True) as cursor:
-            # 조회수 증가
-            cursor.execute("UPDATE board SET views = views + 1 WHERE id = %s", (post_id,))
-            conn.commit()
-
             # 게시글 조회
             cursor.execute("SELECT * FROM board WHERE id = %s", (post_id,))
             post = cursor.fetchone()
 
             if post is None:
                 return "존재하지 않는 게시글입니다.", 404
+
+            # 비밀글이면 비밀번호 확인부터
+            if post["is_secret"]:
+                if request.method == "POST":
+                    input_pw = request.form.get("input_password")
+                    if input_pw != post["post_password"]:
+                        return render_template("post_password_check.html", post_id=post_id, error="비밀번호가 일치하지 않습니다.")
+                else:
+                    return render_template("post_password_check.html", post_id=post_id)
+
+            # 조회수 증가
+            cursor.execute("UPDATE board SET views = views + 1 WHERE id = %s", (post_id,))
+            conn.commit()
             
         # 조회한 게시글 데이터를 post.html에 전달
         return render_template("post.html", post=post)

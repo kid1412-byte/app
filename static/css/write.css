@@ -79,3 +79,17 @@ textarea {
 .button.cancel:hover {
     background: #5a6268;
 }
+
+/* 비밀글 체크박스 박스 스타일 */
+.secret-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 20px 0 10px;
+  }
+  
+  .secret-checkbox label {
+    margin: 0;
+    white-space: nowrap;
+  }
+  

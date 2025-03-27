@@ -12,7 +12,13 @@
 <body>
   <div class="container">
     <!-- 제목 -->
-    <h1>{{ post.title }}</h1>
+    <h2>
+      {% if post.is_secret %}
+        🔒 {{ post.title }}
+      {% else %}
+        {{ post.title }}
+      {% endif %}
+    </h2>
     <div class="post-meta">
       <p><strong>작성자:</strong> {{ post.author }}</p>
       <p><strong>작성일:</strong> {{ post.created_at }}</p>
