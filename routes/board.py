@@ -179,18 +179,29 @@ def edit(post_id):
             # POST 요청 시
             # 수정된 내용
             title = request.form.get("title")
-            author = request.form.get("author")
             content = request.form.get("content")
+            file = request.files.get("file")
              
             # 입력 검사
-            if not all([title, author, content]):
+            if not all([title, content]):
                 return "모든 필드를 입력해주세요.", 400
 
+            filename = None
+            if file and file.filename != "":
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], filename))
+
             # 수정된 내용으로 업데이트
-            cursor.execute("""
-                UPDATE board SET title = %s, author = %s, content = %s
-                WHERE id = %s
-            """, (title, author, content, post_id))
+            if filename: # 파일이 있으면
+                cursor.execute("""
+                    UPDATE board SET title = %s, content = %s, filename = %s
+                    WHERE id = %s
+                """, (title, content, filename, post_id))
+            else: # 파일이 없으면
+                cursor.execute("""
+                    UPDATE board SET title = %s, content = %s
+                    WHERE id = %s
+                """, (title, content, post_id))
             conn.commit() # db 변경 내용 저장
             # 해당 게시글의 id값과 함께 post 라우트로 이동
             return redirect(url_for('board.post', post_id=post_id))
@@ -215,6 +226,7 @@ def delete(post_id):
     finally:
         conn.close()
 
+# 파일 업로드
 @board_bp.route("/uploads/<filename>")
 @jwt_required()
 def download_file(filename):

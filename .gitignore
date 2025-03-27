@@ -31,3 +31,6 @@ instance/
 # 💡 Mac, Windows에서 자동 생성되는 불필요한 파일 제외
 .DS_Store
 Thumbs.db
+
+# 업로드된 파일 무시
+/static/uploads/
