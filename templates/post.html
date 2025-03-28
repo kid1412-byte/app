@@ -10,6 +10,7 @@
 
 </head>
 <body>
+  {% include 'partials/top_nav.html' %}
   <div class="container">
     <!-- 제목 -->
     <h2>
@@ -35,13 +36,17 @@
     <div class="post-content">
       <p>{{ post.content }}</p>
     </div>
+    <p>post.author = '{{ post.author }}'</p>
+    <p>current_user = '{{ current_user }}'</p>
     <div class="post-actions">
       <!-- 게시판으로 이동 -->
       <a href="{{ url_for('board.board') }}">목록으로</a>
+      {% if post.author == current_user %}
       <!-- 수정 창으로 이동 -->
       <a href="{{ url_for('board.edit', post_id=post.id) }}" class="button edit">수정</a>
       <!-- 게시글 삭제 -->
       <a href="{{ url_for('board.delete', post_id=post.id) }}" class="button delete" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
+      {% endif %}
     </div>
   </div>
 </body>

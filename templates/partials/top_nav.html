@@ -1,0 +1,28 @@
+<div class="top-nav">
+  <a href="#" class="mypage-button">마이페이지</a>
+  <a href="{{ url_for('auth.logout') }}" class="logout-button">로그아웃</a>
+</div>
+
+<style>
+  .top-nav {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  .logout-button,
+  .mypage-button {
+    background-color: #007bff;
+    color: white !important;
+    padding: 6px 12px;
+    margin-left: 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+
+  .logout-button:hover,
+  .mypage-button:hover {
+    background-color: #0056b3;
+  }
+</style>

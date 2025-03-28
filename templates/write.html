@@ -9,39 +9,39 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/write.css') }}">
 </head>
 <body>
+    {% include 'partials/top_nav.html' %}
+    <div class="container">
+        <h1>글쓰기</h1>
+        <!-- 게시글 작성 폼 -->
+        <form action="{{ url_for('board.write') }}" method="POST" enctype="multipart/form-data">
+            <label for="title">제목</label>
+            <input type="text" id="title" name="title" required>
 
-<div class="container">
-    <h1>글쓰기</h1>
-    <!-- 게시글 작성 폼 -->
-    <form action="{{ url_for('board.write') }}" method="POST" enctype="multipart/form-data">
-        <label for="title">제목</label>
-        <input type="text" id="title" name="title" required>
+            <label for="file">파일</label>
+            <input type="file" id="file" name="file">
 
-        <label for="file">파일</label>
-        <input type="file" id="file" name="file">
+            <label for="content">내용</label>
+            <textarea id="content" name="content" rows="5" required></textarea>
 
-        <label for="content">내용</label>
-        <textarea id="content" name="content" rows="5" required></textarea>
+            <!-- 비밀글 옵션 -->
+            <div class="form-group secret-checkbox">
+                <input type="checkbox" id="is_secret" name="is_secret" value="1" onchange="togglePasswordField()">
+                <label for="is_secret">비밀글</label>
+            </div>
+            
+            <!-- 비밀번호 입력 -->
+            <div class="form-group post-password" id="passwordField" style="display: none;">
+                <label for="post_password">게시글 비밀번호</label>
+                <input type="password" id="post_password" name="post_password" placeholder="비밀번호">
+            </div>
 
-        <!-- 비밀글 옵션 -->
-        <div class="form-group secret-checkbox">
-            <input type="checkbox" id="is_secret" name="is_secret" value="1" onchange="togglePasswordField()">
-            <label for="is_secret">비밀글</label>
-        </div>
-        
-        <!-- 비밀번호 입력 -->
-        <div class="form-group post-password" id="passwordField" style="display: none;">
-            <label for="post_password">게시글 비밀번호</label>
-            <input type="password" id="post_password" name="post_password" placeholder="비밀번호">
-        </div>
-
-        <div class="buttons">
-            <button type="submit" class="button">등록</button>
-            <!-- 취소시 다시 게시판으로 -->
-            <a href="{{ url_for('board.board') }}" class="button cancel">취소</a>
-        </div>
-    </form>
-</div>
+            <div class="buttons">
+                <button type="submit" class="button">등록</button>
+                <!-- 취소시 다시 게시판으로 -->
+                <a href="{{ url_for('board.board') }}" class="button cancel">취소</a>
+            </div>
+        </form>
+    </div>
 </body>
 <script>
     //비밀글 체크시 비밀번호 입력 칸 보이게

@@ -10,81 +10,80 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/pagination.css') }}">
 </head>
 <body>
+    {% include 'partials/top_nav.html' %}
+    <div class="container">
+        <h1>게시판</h1>
 
-<div class="container">
-    <h1>게시판</h1>
+        <!-- 검색 폼 -->
+        <div class="search-container">
+            <form method="get" action="{{ url_for('board.board') }}" class="search-form">
+                <!-- 검색 기준 선택 -->
+                <select name="search_type">
+                    <option value="all" {% if search_type == 'all' %}selected{% endif %}>제목+내용</option>
+                    <option value="title" {% if search_type == 'title' %}selected{% endif %}>제목</option>
+                    <option value="content" {% if search_type == 'content' %}selected{% endif %}>내용</option>
+                </select>
+                <!-- 검색어 입력 -->
+                <input type="text" name="keyword" value="{{ keyword }}" placeholder="검색어 입력" required>
+                <button type="submit">검색</button>
+            </form>
+        </div>
 
-    <!-- 검색 폼 -->
-    <div class="search-container">
-        <form method="get" action="{{ url_for('board.board') }}" class="search-form">
-            <!-- 검색 기준 선택 -->
-            <select name="search_type">
-                <option value="all" {% if search_type == 'all' %}selected{% endif %}>제목+내용</option>
-                <option value="title" {% if search_type == 'title' %}selected{% endif %}>제목</option>
-                <option value="content" {% if search_type == 'content' %}selected{% endif %}>내용</option>
-            </select>
-            <!-- 검색어 입력 -->
-            <input type="text" name="keyword" value="{{ keyword }}" placeholder="검색어 입력" required>
-            <button type="submit">검색</button>
-        </form>
-    </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>글쓴이</th>
+                    <th>시간</th>
+                    <th>조회수</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--전달 받은 게시글 데이터 하나씩 출력-->
+                {% for i in data_list %}
+                <tr>
+                    <td>{{ i.id }}</td>
+                    <td>
+                        <a href="{{ url_for('board.post', post_id=i.id) }}">
+                        {% if i.is_secret %}
+                            🔒 {{ i.title }}
+                        {% else %}
+                            {{ i.title }}
+                        {% endif %}
+                        </a>
+                    </td>
+                    <td>{{ i.author }}</td>
+                    <td>{{ i.created_at }}</td>
+                    <td>{{ i.views }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-    
-    <table>
-        <thead>
-            <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>글쓴이</th>
-                <th>시간</th>
-                <th>조회수</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!--전달 받은 게시글 데이터 하나씩 출력-->
-            {% for i in data_list %}
-            <tr>
-                <td>{{ i.id }}</td>
-                <td>
-                    <a href="{{ url_for('board.post', post_id=i.id) }}">
-                      {% if i.is_secret %}
-                        🔒 {{ i.title }}
-                      {% else %}
-                        {{ i.title }}
-                      {% endif %}
-                    </a>
-                  </td>
-                <td>{{ i.author }}</td>
-                <td>{{ i.created_at }}</td>
-                <td>{{ i.views }}</td>
-            </tr>
+        <ul class="pagination">
+            <!-- 페이지가 1보다 크면 이전 화살표 표시-->
+            {% if page > 1 %}
+                <li><a href="{{ url_for('board.board', page=page-1, search_type=search_type, keyword=keyword) }}">◀</a></li>
+            {% endif %}
+            
+            <!-- 페이지 번호 이동 버튼 -->
+            {% for p in range(1, total_pages + 1) %}
+                <li>
+                    <a href="{{ url_for('board.board', page=p, search_type=search_type, keyword=keyword) }}"
+                    class="{% if p == page %}active{% endif %}">{{ p }}</a>
+                </li>
             {% endfor %}
-        </tbody>
-    </table>
-
-    <ul class="pagination">
-        <!-- 페이지가 1보다 크면 이전 화살표 표시-->
-        {% if page > 1 %}
-            <li><a href="{{ url_for('board.board', page=page-1, search_type=search_type, keyword=keyword) }}">◀</a></li>
-        {% endif %}
+            
+            <!-- 페이지가 전체 페이지 갯수보다 작으면 다음 화살표 표시-->
+            {% if page < total_pages %}
+                <li><a href="{{ url_for('board.board', page=page+1, search_type=search_type, keyword=keyword) }}">▶</a></li>
+            {% endif %}
+        </ul>
         
-        <!-- 페이지 번호 이동 버튼 -->
-        {% for p in range(1, total_pages + 1) %}
-            <li>
-                <a href="{{ url_for('board.board', page=p, search_type=search_type, keyword=keyword) }}"
-                   class="{% if p == page %}active{% endif %}">{{ p }}</a>
-            </li>
-        {% endfor %}
-        
-        <!-- 페이지가 전체 페이지 갯수보다 작으면 다음 화살표 표시-->
-        {% if page < total_pages %}
-            <li><a href="{{ url_for('board.board', page=page+1, search_type=search_type, keyword=keyword) }}">▶</a></li>
-        {% endif %}
-    </ul>
-    
-    <!-- 게시글 작성으로 이동 -->
-    <a href="{{ url_for('board.write') }}" class="button">글쓰기</a>
-</div>
-
+        <!-- 게시글 작성으로 이동 -->
+        <a href="{{ url_for('board.write') }}" class="button">글쓰기</a>
+    </div>
 </body>
 </html>

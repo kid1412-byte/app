@@ -133,6 +133,7 @@ def write():
 @board_bp.route("/post/<int:post_id>", methods=["GET", "POST"])
 @jwt_required()
 def post(post_id):
+    current_user = get_jwt_identity()
     conn = get_db_connection() # mysql 연결
     if conn is None:
         return "DB 연결 실패", 500
@@ -160,7 +161,7 @@ def post(post_id):
             conn.commit()
             
         # 조회한 게시글 데이터를 post.html에 전달
-        return render_template("post.html", post=post)
+        return render_template("post.html", post=post, current_user=current_user)
     except mysql.connector.Error as e:
         return f"게시글 조회 중 오류 발생: {e}", 500
     finally:
@@ -170,6 +171,8 @@ def post(post_id):
 @board_bp.route("/edit/<int:post_id>", methods=["GET", "POST"])
 @jwt_required()
 def edit(post_id):
+    if post["author"] != get_jwt_identity():
+        return "권한이 없습니다.", 403
     conn = get_db_connection() # mysql 연결
     if conn is None:
         return "DB 연결 실패", 500
@@ -226,6 +229,8 @@ def edit(post_id):
 @board_bp.route("/delete/<int:post_id>")
 @jwt_required()
 def delete(post_id):
+    if post["author"] != get_jwt_identity():
+        return "권한이 없습니다.", 403
     conn = get_db_connection() # mysql 연결
     if conn is None:
         return "DB 연결 실패", 500
