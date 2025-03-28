@@ -191,7 +191,9 @@ def edit(post_id):
             title = request.form.get("title")
             content = request.form.get("content")
             file = request.files.get("file")
-             
+            is_secret = bool(request.form.get("is_secret"))
+            post_password = request.form.get("post_password") if is_secret else None
+
             # 입력 검사
             if not all([title, content]):
                 return "모든 필드를 입력해주세요.", 400
@@ -204,17 +206,19 @@ def edit(post_id):
             # 수정된 내용으로 업데이트
             if filename: # 파일이 있으면
                 cursor.execute("""
-                    UPDATE board SET title = %s, content = %s, filename = %s
+                    UPDATE board SET title = %s, content = %s, filename = %s, is_secret = %s, post_password = %s
                     WHERE id = %s
-                """, (title, content, filename, post_id))
+                """, (title, content, filename, is_secret, post_password, post_id))
+
             else: # 파일이 없으면
                 cursor.execute("""
-                    UPDATE board SET title = %s, content = %s
+                    UPDATE board SET title = %s, content = %s, is_secret = %s, post_password = %s
                     WHERE id = %s
-                """, (title, content, post_id))
+                """, (title, content, is_secret, post_password, post_id))
             conn.commit() # db 변경 내용 저장
-            # 해당 게시글의 id값과 함께 post 라우트로 이동
-            return redirect(url_for('board.post', post_id=post_id))
+            # 수정 후 post 비밀번호 페이지로 POST 요청 자동 전송
+            return render_template("redirect_with_password.html", post_id=post_id, post_password=post_password)
+
     finally:
         conn.close()
 

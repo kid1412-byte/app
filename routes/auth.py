@@ -3,6 +3,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies
 from datetime import timedelta
 from models.db import get_db_connection
+import mysql.connector
+
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -66,7 +68,7 @@ def login():
                 if user and check_password_hash(user["password"], password):
                     access_token = create_access_token(
                         identity=user["id"],
-                        expires_delta=timedelta(hours=1)
+                        expires_delta=timedelta(hours=24)
                     )
 
                     # JWT를 쿠키에 저장해서 응답

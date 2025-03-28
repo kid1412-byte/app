@@ -93,3 +93,24 @@ textarea {
     white-space: nowrap;
   }
   
+  /* 비밀번호 입력 필드 */
+.post-password {
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .post-password label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .post-password input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  

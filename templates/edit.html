@@ -23,9 +23,36 @@
     
       <label for="content">내용</label>
       <textarea id="content" name="content" rows="5" required>{{ post.content }}</textarea>
-    
-      <button type="submit">수정 완료</button>
+
+      <!-- 비밀글 설정 -->
+      <div class="form-group secret-checkbox">
+        <input type="checkbox" id="is_secret" name="is_secret" value="1"
+               {% if post.is_secret %}checked{% endif %}
+               onchange="togglePasswordField()">
+        <label for="is_secret">비밀글</label>
+      </div>
+
+      <!-- 비밀번호 입력 필드 -->
+      <div class="form-group secret-password" id="passwordField"
+           style="display: {% if post.is_secret %}block{% else %}none{% endif %};">
+        <label for="post_password">게시글 비밀번호</label>
+        <input type="password" id="post_password" name="post_password"
+               value="{{ post.post_password or '' }}" placeholder="비밀번호">
+      </div>
+
+      <div class="buttons">
+        <button type="submit" class="button">수정 완료</button>
+        <a href="{{ url_for('board.post', post_id=post.id) }}" class="button cancel">취소</a>
+      </div>
     </form>
   </div>
+
+  <script>
+    function togglePasswordField() {
+      const checkbox = document.getElementById("is_secret");
+      const passwordField = document.getElementById("passwordField");
+      passwordField.style.display = checkbox.checked ? "block" : "none";
+    }
+  </script>
 </body>
 </html>
