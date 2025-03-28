@@ -140,6 +140,7 @@ def reset_password():
 @auth_bp.route("/profile/<user_id>")
 @jwt_required()
 def profile(user_id):
+    post_id = request.args.get("post_id")
     current_user_id = get_jwt_identity()
 
     conn = get_db_connection()
@@ -153,7 +154,7 @@ def profile(user_id):
 
     # 본인 여부 체크해서 전달
     is_owner = (current_user_id == user_id)
-    return render_template("profile.html", user=user, is_owner=is_owner)
+    return render_template("profile.html", user=user, is_owner=is_owner, post_id=post_id)
 
 # 프로필 사진 업로드
 @auth_bp.route("/profile/upload", methods=["POST"])

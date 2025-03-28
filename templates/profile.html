@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
 </head>
 <body>
+  {% include 'partials/top_nav.html' %}
   <div class="container">
     <h2>프로필</h2>
 
@@ -32,5 +33,13 @@
       <p><strong>생년월일:</strong> {{ user.birthdate }}</p>
     </div>
   </div>
+
+  <div class="go-board">
+    <a href="{{ url_for('board.board') }}" class="button">게시판으로</a>
+    {% if post_id %}
+      <a href="{{ url_for('board.post', post_id=post_id) }}" class="button">게시글로</a>
+    {% endif %}
+  </div>
+  
 </body>
 </html>

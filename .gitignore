@@ -34,3 +34,5 @@ Thumbs.db
 
 # 업로드된 파일 무시
 /static/uploads/
+/static/profile/*
+!static/profile/default_profile.png

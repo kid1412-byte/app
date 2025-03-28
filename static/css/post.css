@@ -16,9 +16,10 @@
   }
   
   .post-meta {
-    margin-bottom: 20px;
-    color: #666;
-    font-size: 0.95em;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
   }
   
   .post-meta p {
@@ -69,5 +70,18 @@
   }
   .button.cancel:hover {
     background-color: #5a6268;
+  }
+  
+  .author-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .author-img {
+    border-radius: 50%;
+    margin-right: 8px;
+    object-fit: cover;
   }
   

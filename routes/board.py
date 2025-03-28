@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, make_response, current_app, send_from_directory
+from flask import Blueprint, render_template, request, redirect, url_for, current_app, send_from_directory
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.db import get_db_connection
 from werkzeug.utils import secure_filename
@@ -20,7 +20,7 @@ def board():
     # mysql 연결
     conn = get_db_connection()
     if conn is None:
-        return "DB 연결 실패", 500
+        return render_template("partials/alert.html", message="DB 연결 실패")
 
     try:
         with conn.cursor(dictionary=True) as cursor:
@@ -108,12 +108,12 @@ def write():
 
     # 입력 검사
     if not all([title, content]):
-        return "모든 필드를 입력해주세요.", 400
+        return render_template("partials/alert.html", message="모든 필드를 입력해주세요.")
     
     # mysql 연결
     conn = get_db_connection()
     if conn is None:
-        return "DB 연결 실패", 500
+        return render_template("partials/alert.html", message="DB 연결 실패")
 
     # 게시글 데이터 삽입 SQL문 실행
     try:
@@ -125,7 +125,7 @@ def write():
         conn.commit()
         return redirect(url_for("board.board"))
     except mysql.connector.Error as e:
-        return f"글 작성 중 오류 발생: {e}", 500
+        return render_template("partials/alert.html", message=f"글 작성 중 오류 발생: {e}")
     finally:
         conn.close()
 
@@ -136,7 +136,7 @@ def post(post_id):
     current_user = get_jwt_identity()
     conn = get_db_connection() # mysql 연결
     if conn is None:
-        return "DB 연결 실패", 500
+        return render_template("partials/alert.html", message="DB 연결 실패")
 
     try:
         with conn.cursor(dictionary=True) as cursor:
@@ -145,8 +145,8 @@ def post(post_id):
             post = cursor.fetchone()
 
             if post is None:
-                return "존재하지 않는 게시글입니다.", 404
-
+                return render_template("partials/alert.html", message="존재하지 않는 게시글입니다.")
+            
             # 비밀글이면 비밀번호 확인부터
             if post["is_secret"]:
                 if request.method == "POST":
@@ -163,7 +163,7 @@ def post(post_id):
         # 조회한 게시글 데이터를 post.html에 전달
         return render_template("post.html", post=post, current_user=current_user)
     except mysql.connector.Error as e:
-        return f"게시글 조회 중 오류 발생: {e}", 500
+        return render_template("partials/alert.html", message=f"게시글 조회 중 오류 발생: {e}")
     finally:
         conn.close()
 
@@ -171,21 +171,23 @@ def post(post_id):
 @board_bp.route("/edit/<int:post_id>", methods=["GET", "POST"])
 @jwt_required()
 def edit(post_id):
-    if post["author"] != get_jwt_identity():
-        return "권한이 없습니다.", 403
     conn = get_db_connection() # mysql 연결
     if conn is None:
-        return "DB 연결 실패", 500
+        return render_template("partials/alert.html", message="DB 연결 실패")
 
     try:
         with conn.cursor(dictionary=True) as cursor:
+            # 게시글 조회
+            cursor.execute("SELECT * FROM board WHERE id = %s", (post_id,))
+            post = cursor.fetchone()
+
+            if post["author"] != get_jwt_identity():
+                return render_template("partials/alert.html", message="권한이 없습니다."), 403
+
             # GET 요청 시
             if request.method == "GET":
-                # 게시글 조회
-                cursor.execute("SELECT * FROM board WHERE id = %s", (post_id,))
-                post = cursor.fetchone()
                 if not post:
-                    return "존재하지 않는 게시글입니다.", 
+                   return render_template("partials/alert.html", message="존재하지 않는 게시글입니다.")
                 # 조회된 데이터를 edit.html에 전달
                 return render_template("edit.html", post=post)
             
@@ -199,7 +201,7 @@ def edit(post_id):
 
             # 입력 검사
             if not all([title, content]):
-                return "모든 필드를 입력해주세요.", 400
+                return render_template("partials/alert.html", message="모든 필드를 입력해주세요.")
 
             filename = None
             if file and file.filename != "":
@@ -229,17 +231,18 @@ def edit(post_id):
 @board_bp.route("/delete/<int:post_id>")
 @jwt_required()
 def delete(post_id):
-    if post["author"] != get_jwt_identity():
-        return "권한이 없습니다.", 403
     conn = get_db_connection() # mysql 연결
     if conn is None:
-        return "DB 연결 실패", 500
+        return render_template("partials/alert.html", message="DB 연결 실패")
 
     try:
         with conn.cursor(dictionary=True) as cursor:
             # 삭제할 게시글 정보 조회
             cursor.execute("SELECT filename FROM board WHERE id = %s", (post_id,))
             post = cursor.fetchone()
+
+            if post["author"] != get_jwt_identity():
+                return render_template("partials/alert.html", message="권한이 없습니다."), 403
 
             # 파일이 있으면 서버에서 삭제
             if post and post["filename"]:
