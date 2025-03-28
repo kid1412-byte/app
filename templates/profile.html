@@ -1,0 +1,36 @@
+<!-- templates/profile_page.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>프로필 페이지</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h2>프로필</h2>
+
+    <!-- 프로필 이미지 -->
+    <div class="profile-image">
+        <form action="{{ url_for('auth.upload_profile_image') }}" method="POST" enctype="multipart/form-data" id="upload-form">
+        <label for="profile-input">
+            <img src="{{ url_for('static', filename='profile/' + (user.profile_image or 'default_profile.png')) }}"
+                alt="프로필 이미지" width="150" height="150" style="cursor: pointer;" />
+        </label>
+        {% if is_owner %}
+        <input type="file" name="profile_image" id="profile-input" accept="image/*" style="display: none;" onchange="document.getElementById('upload-form').submit();">
+        {% endif %}
+        </form>
+    </div>
+  
+    <!-- 사용자 정보 -->
+    <div class="profile-info">
+      <p><strong>아이디:</strong> {{ user.id }}</p>
+      <p><strong>이름:</strong> {{ user.name }}</p>
+      <p><strong>학교:</strong> {{ user.school }}</p>
+      <p><strong>생년월일:</strong> {{ user.birthdate }}</p>
+    </div>
+  </div>
+</body>
+</html>

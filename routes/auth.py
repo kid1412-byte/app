@@ -136,6 +136,7 @@ def reset_password():
     
     return render_template("reset_password.html")
 
+# 프로필
 @auth_bp.route("/profile/<user_id>")
 @jwt_required()
 def profile(user_id):
@@ -154,6 +155,7 @@ def profile(user_id):
     is_owner = (current_user_id == user_id)
     return render_template("profile.html", user=user, is_owner=is_owner)
 
+# 프로필 사진 업로드
 @auth_bp.route("/profile/upload", methods=["POST"])
 @jwt_required()
 def upload_profile_image():
@@ -176,6 +178,7 @@ def upload_profile_image():
 
     return render_template("partials/alert.html", message="파일을 선택해주세요.")
 
+# 마이페이지
 @auth_bp.route("/mypage")
 @jwt_required()
 def mypage():

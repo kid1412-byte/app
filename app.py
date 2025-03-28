@@ -17,6 +17,7 @@ app.config["JWT_COOKIE_CSRF_PROTECT"] = False # 개발중엔 CSRF 끄기
 # 파일 업로드 경로 설정
 app.config["UPLOAD_FOLDER"] = os.path.join("static", "uploads")
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+app.config["PROFILE_UPLOAD_FOLDER"] = os.path.join(app.root_path, "static/profile")
 
 jwt = JWTManager(app)
 

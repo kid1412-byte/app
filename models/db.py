@@ -54,7 +54,8 @@ def create_tables():
             name VARCHAR(50) NOT NULL,
             school VARCHAR(100) NOT NULL,
             birthdate DATE NOT NULL,
-            password VARCHAR(255) NOT NULL
+            password VARCHAR(255) NOT NULL,
+            profile_image VARCHAR(255)
         )
     """)
     conn.commit() # db 변경 내용 저장
