@@ -89,3 +89,20 @@ body {
     text-decoration: none;
   }
   
+  /* 아이디 비번 찾기 링크 */
+  .find-link {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 14px;
+  }
+  
+  .find-link a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .find-link a:hover {
+    color: #1864ab;
+    text-decoration: none;
+  }
+  

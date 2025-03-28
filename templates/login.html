@@ -7,6 +7,14 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
 <body>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <script>
+        alert("{{ messages[0] }}");
+      </script>
+    {% endif %}
+  {% endwith %}
+
   <div class="container">
     <h2>로그인</h2>
     <form action="{{ url_for('auth.login') }}" method="POST">
@@ -21,6 +29,11 @@
     <p class="signup-link">
         아직 계정이 없으신가요?
         <a href="{{ url_for('auth.signup') }}">회원가입</a>
+    </p>
+
+    <p class="find-link">
+      <a href="{{ url_for('auth.find_id') }}">아이디 찾기</a> |
+      <a href="{{ url_for('auth.reset_password') }}">비밀번호 재설정</a>
     </p>
   </div>
 </body>

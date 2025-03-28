@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>아이디 찾기</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/find_id.css') }}">
+</head>
+<body>
+  <div class="form-container">
+    <h2>아이디 찾기</h2>
+    <form method="POST">
+      <label for="name">이름</label>
+      <input type="text" name="name" required>
+
+      <label for="birthdate">생년월일</label>
+      <input type="date" name="birthdate" required>
+
+      <button type="submit" class="button">아이디 찾기</button>
+    </form>
+  </div>
+</body>
+</html>
