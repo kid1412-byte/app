@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>알림</title>
+  <script>
+    window.onload = function () {
+      alert("{{ message | safe }}");
+      {% if redirect_url %}
+        location.href = "{{ redirect_url }}";
+      {% else %}
+        history.back();
+      {% endif %}
+    };
+  </script>
+</head>
+<body>
+</body>
+</html>
