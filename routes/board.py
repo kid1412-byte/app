@@ -247,7 +247,7 @@ def delete(post_id):
     try:
         with conn.cursor(dictionary=True) as cursor:
             # 삭제할 게시글 정보 조회
-            cursor.execute("SELECT filename FROM board WHERE id = %s", (post_id,))
+            cursor.execute("SELECT author, filename FROM board WHERE id = %s", (post_id,))
             post = cursor.fetchone()
 
             if post["author"] != get_jwt_identity(): # 게시글 작성자만 삭제 가능
