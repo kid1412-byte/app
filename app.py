@@ -4,23 +4,25 @@ from models.db import create_tables
 from flask_jwt_extended import JWTManager
 import os
 
-# 블루프린트 등록
+# 기능 모듈들 임포트
 from routes.main import main_bp
 from routes.auth import auth_bp
 from routes.board import board_bp
 
 app = Flask(__name__)
-app.config.from_object(Config)
+app.config.from_object(Config) # jwt 관련 환경설정
 app.config["JWT_COOKIE_CSRF_PROTECT"] = False # 개발중엔 CSRF 끄기
 
 
-# 파일 업로드 경로 설정
-app.config["UPLOAD_FOLDER"] = os.path.join("static", "uploads")
+# 업로드 폴더가 없으면 생성
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
-app.config["PROFILE_UPLOAD_FOLDER"] = os.path.join(app.root_path, "static/profile")
+# 프로필 업로드 폴더가 없으면 생성
+os.makedirs(os.path.join(app.root_path, app.config["PROFILE_UPLOAD_FOLDER"]), exist_ok=True)
 
+# jwt 관련 기능 사용
 jwt = JWTManager(app)
 
+# 기능 모듈들 블루프린트로 등록
 app.register_blueprint(main_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(board_bp)

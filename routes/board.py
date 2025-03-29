@@ -95,16 +95,18 @@ def write():
     
     # POST 요청시 수행
     # html 각 name속성을 가진 폼에서 입력된 내용 가져옴
-    title = request.form.get("title")
-    author = get_jwt_identity()
-    content = request.form.get("content")
-    file = request.files.get("file")
-    is_secret = bool(request.form.get("is_secret"))
-    post_password = request.form.get("post_password") if is_secret else None
+    title = request.form.get("title") # 제목
+    author = get_jwt_identity() # 작성자는 jwt 토큰에서 추출
+    content = request.form.get("content") # 내용
+    file = request.files.get("file") # 파일
+    is_secret = bool(request.form.get("is_secret")) # 비밀글 여부
+    post_password = request.form.get("post_password") if is_secret else None # 비밀글 비밀번호
+
     filename = None
+    # 파일이 있으면
     if file and file.filename != "":
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], filename))
+        filename = secure_filename(file.filename) # 파일명에 포함된 특수문자, 공백, 경로 제거
+        file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], filename)) # 파일 저장
 
     # 입력 검사
     if not all([title, content]):
@@ -141,9 +143,16 @@ def post(post_id):
     try:
         with conn.cursor(dictionary=True) as cursor:
             # 게시글 조회
-            cursor.execute("SELECT * FROM board WHERE id = %s", (post_id,))
+            cursor.execute("""
+                SELECT board.*, users.profile_image 
+                FROM board
+                JOIN users ON board.author = users.id
+                WHERE board.id = %s
+            """, (post_id,))
+            # board와 users을 board.author = users.id인 JOIN한 것 중
+            # board.id가 post_id와 같은 행의 board와 users.profile_image를 조회
             post = cursor.fetchone()
-
+            
             if post is None:
                 return render_template("partials/alert.html", message="존재하지 않는 게시글입니다.")
             
@@ -241,7 +250,7 @@ def delete(post_id):
             cursor.execute("SELECT filename FROM board WHERE id = %s", (post_id,))
             post = cursor.fetchone()
 
-            if post["author"] != get_jwt_identity():
+            if post["author"] != get_jwt_identity(): # 게시글 작성자만 삭제 가능
                 return render_template("partials/alert.html", message="권한이 없습니다."), 403
 
             # 파일이 있으면 서버에서 삭제
@@ -258,9 +267,9 @@ def delete(post_id):
     finally:
         conn.close()
 
-# 파일 업로드
+# 파일 다운로드
 @board_bp.route("/uploads/<filename>")
 @jwt_required()
 def download_file(filename):
-    upload_folder = current_app.config["UPLOAD_FOLDER"]
-    return send_from_directory(upload_folder, filename, as_attachment=True)
+    upload_folder = current_app.config["UPLOAD_FOLDER"] # app에서 저장된 파일 경로 받아옴
+    return send_from_directory(upload_folder, filename, as_attachment=True) # 지정된 폴더에서 파일을 찾아 클라이언트로 전송

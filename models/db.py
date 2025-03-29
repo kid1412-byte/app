@@ -44,8 +44,11 @@ def create_tables():
     # 제목 / 30자 문자열 / null값 X
     # 작성자 / 30자 문자열 / null값 X
     # 내용 / 긴 문자열 / null값 X
+    # 파일 이름 / 255자 문자열
     # 작성 날짜 / 날짜 / 값 지정 없으면 현재 날짜로 세팅
     # 조회수 / 정수 / 디폴트값 0
+    # 비밀글 여부 / 불리안 / 디폴트값 false
+    # 비밀글 비밀번호 / 100자 문자열
 
     # 사용자 테이블
     cursor.execute("""
@@ -58,6 +61,14 @@ def create_tables():
             profile_image VARCHAR(255)
         )
     """)
+    # users라는 이름의 테이블이 없다면 생성
+    # id / 30자 문자열 / 기본키
+    # 이름 / 30자 문자열 / null값 X
+    # 학교 / 100자 문자열 / null값 X
+    # 생일 / 날짜 / null값 X
+    # 비밀번호 / 255자 문자열 / null값 X
+    # 프로필 사진 / 255자 문자열
+    
     conn.commit() # db 변경 내용 저장
     cursor.close() # cursor 닫기
     conn.close() # mysql 연결 끊기
