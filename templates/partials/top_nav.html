@@ -2,6 +2,8 @@
   <a href="{{ url_for('auth.mypage') }}" class="mypage-button">마이페이지</a>
   <a href="{{ url_for('auth.logout') }}" class="logout-button">로그아웃</a>
 </div>
+<!--자동 로그아웃 -->
+<script src="{{ url_for('static', filename='js/autoLogout.js') }}"></script>
 
 <style>
   .top-nav {

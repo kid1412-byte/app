@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, make_response, current_app
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
-from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies, jwt_required, get_jwt_identity, verify_jwt_in_request_optional
 from datetime import timedelta
 from models.db import get_db_connection
 import mysql.connector
@@ -14,12 +14,12 @@ auth_bp = Blueprint("auth", __name__)
 @auth_bp.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        user_id = request.form.get("id")
-        name = request.form.get("name")
-        school = request.form.get("school")
-        birthdate = request.form.get("birthdate")
-        password = request.form.get("password")
-        confirm = request.form.get("confirm_password")
+        user_id = request.form.get("id") # id
+        name = request.form.get("name") # 이름
+        school = request.form.get("school") # 학교
+        birthdate = request.form.get("birthdate") # 생일
+        password = request.form.get("password") # 비밀번호
+        confirm = request.form.get("confirm_password") # 비밀번호 확인
 
         # 입력 검사
         if not all([user_id, name, school, birthdate, password, confirm]):
@@ -72,7 +72,7 @@ def login():
                 if user and check_password_hash(user["password"], password):
                     access_token = create_access_token(
                         identity=user["id"],
-                        expires_delta=timedelta(hours=24)
+                        expires_delta=timedelta(hours=24) # 토큰 유효시간
                     )
 
                     # JWT를 쿠키에 저장해서 응답
@@ -91,6 +91,14 @@ def logout():
     response = make_response(redirect(url_for("main.home")))
     unset_jwt_cookies(response) # 쿠키 삭제
     return response
+
+# 토큰 유효성 검사
+@auth_bp.route("/check-auth")
+@verify_jwt_in_request_optional
+def check_auth():
+    if get_jwt_identity() is None:
+        return "", 401
+    return "", 200
 
 # 아이디 찾기
 @auth_bp.route("/find_id", methods=["GET", "POST"])
